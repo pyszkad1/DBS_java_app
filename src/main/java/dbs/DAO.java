@@ -36,8 +36,19 @@ public class DAO {
         em.getTransaction().commit();
     }
 
+    public Long getTableEntryCount(EntityManager em, String tableName) {
+        String query = "SELECT COUNT(e) FROM " + tableName + " e";
+        TypedQuery<Long> typedQuery = em.createQuery(query, Long.class);
+        return typedQuery.getSingleResult();
+    }
+
     public static <T> List<T> getAllEntities(EntityManager em, Class<T> entityType) {
         TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityType.getSimpleName() + " e", entityType);
+        return query.getResultList();
+    }
+
+    public static <T> List<T> getAllEntities(EntityManager em, Class<T> entityType, Integer primaryKey) {
+        TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityType.getSimpleName() + " e WHERE e.id = " + primaryKey, entityType);
         return query.getResultList();
     }
 

@@ -18,17 +18,39 @@ public class ServiceLevel {
     }
 
 
-//    public String getResultsByPlayerIdAndTournament(EntityManager em, Integer personalNumber, Integer tournamentId) {
-//        TypedQuery<TResult> query = em.createQuery("SELECT r FROM TResult r WHERE (r.id.player1 = :personalNumber OR r.id.player2 = :personalNumber OR r.id.player3 = :personalNumber OR r.id.player4 = :personalNumber) AND r.id.tournamentId = :tournamentId", TResult.class);
-//        query.setParameter("personalNumber", personalNumber);
-//        query.setParameter("tournamentId", tournamentId);
-//        List<TResult> results = query.getResultList();
-//        StringBuilder sb = new StringBuilder();
-//        for (TResult result : results) {
-//            sb.append(result.toString());
-//        }
-//        return sb.toString();
-//    }
+    public String getPlayersInTournament(EntityManager em, Integer tournamentId) {
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<PlayerInTournament> cq = cb.createQuery(PlayerInTournament.class);
+            Root<PlayerInTournament> root = cq.from(PlayerInTournament.class);
+
+            Predicate tournamentPredicate = cb.equal(root.get("id").get("tournamentId"), tournamentId);
+
+            cq.where(tournamentPredicate);
+
+            TypedQuery<PlayerInTournament> query = em.createQuery(cq);
+            List<PlayerInTournament> players = query.getResultList();
+
+            StringBuilder sb = new StringBuilder();
+
+            for (PlayerInTournament player : players) {
+
+                Person p = em.find(Person.class, player.getId().getPlayerNumber());
+                Integer playerNumber = player.getId().getPlayerNumber();
+                String playerName = p.getFirstName() + " " + p.getLastName();
+
+
+                sb.append(playerNumber + " " + playerName).append("\n");
+            }
+
+            return sb.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public String getResultsByPlayerIdAndTournament(EntityManager em, Integer personalNumber, Integer tournamentId) {
         try {
             CriteriaBuilder cb = em.getCriteriaBuilder();
