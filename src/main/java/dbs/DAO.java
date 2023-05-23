@@ -56,6 +56,10 @@ public class DAO {
         return em;
     }
 
+    public void close() {
+        em.close();
+    }
+
 
 
 }

@@ -1,38 +1,49 @@
 package dbs;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@IdClass(NicknameId.class)
 @Table(name = "Nickname")
 public class Nickname {
     @Id
-    @ManyToOne
-    @JoinColumn(name = "player_number", referencedColumnName = "player_number")
-    private Player player;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "nickname_id")
+    private Long nicknameId;
 
-    @Id
     @Column(name = "nickname", length = 255)
     private String nickname;
+
+    @ManyToMany
+    @JoinTable(
+            name = "Player_Nickname",
+            joinColumns = @JoinColumn(name = "nickname_id"),
+            inverseJoinColumns = @JoinColumn(name = "player_number")
+    )
+    private Set<Player> players = new HashSet<>();
 
     // Default constructor
     public Nickname() {
     }
 
     // Parameterized constructor
-    public Nickname(Player player, String nickname) {
-        this.player = player;
+    public Nickname(String nickname) {
         this.nickname = nickname;
     }
 
     // Getters and setters
 
-    public Player getPlayer() {
-        return player;
+    public Long getNicknameId() {
+        return nicknameId;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setNicknameId(Long nicknameId) {
+        this.nicknameId = nicknameId;
     }
 
     public String getNickname() {
@@ -43,11 +54,20 @@ public class Nickname {
         this.nickname = nickname;
     }
 
+    public Set<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(Set<Player> players) {
+        this.players = players;
+    }
+
     @Override
     public String toString() {
         return "Nickname{" +
-                "player=" + player +
+                "nicknameId=" + nicknameId +
                 ", nickname='" + nickname + '\'' +
                 '}';
     }
 }
+

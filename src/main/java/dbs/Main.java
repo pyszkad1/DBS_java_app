@@ -17,7 +17,12 @@ public class Main {
 
         Tests t = new Tests();
 //        t.test1(dao, sl);
-        t.test2(dao, sl);
+//        t.test2(dao, sl);
+//        t.test3(dao, sl);
+//        t.test4(dao, sl);
+        t.test5(dao, sl);
+
+        dao.close();
 
     }
 
