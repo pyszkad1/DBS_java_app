@@ -26,7 +26,6 @@
     <class>dbs.Live</class>
     <class>dbs.Online</class>
     <class>dbs.TResult</class>
-    <class>dbs.TResultId</class>
 
 
     <properties>

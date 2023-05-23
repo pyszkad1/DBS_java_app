@@ -77,13 +77,7 @@ public class TResult {
 
     @Override
     public String toString() {
-        return "TResult{" +
-                "id=" + id +
-                ", contract='" + contract + '\'' +
-                ", declarer='" + declarer + '\'' +
-                ", contractResult='" + contractResult + '\'' +
-                ", points=" + points +
-                '}';
+        return id.getBoardNumber() + " " + contract + " " + declarer + " " + contractResult + " " + points + "\n";
     }
 }
 

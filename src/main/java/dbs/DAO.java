@@ -1,6 +1,7 @@
 package dbs;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 public class DAO {
 
@@ -13,35 +14,37 @@ public class DAO {
     }
 
 
-    public static void createPerson(EntityManager em, Integer personalNumber, String firstName, String lastName, Club club) {
+    public static <T> void createEntity(EntityManager em, T entity) {
         em.getTransaction().begin();
-        Person person = new Person(personalNumber, firstName, lastName, club);
-        em.persist(person);
+        em.persist(entity);
         em.getTransaction().commit();
     }
 
-    public static void createClub(EntityManager em, Integer clubNumber, String name, String address, String federation) {
+    public static <T> T getEntity(EntityManager em, Class<T> entityType, Object primaryKey) {
+        return em.find(entityType, primaryKey);
+    }
+
+    public static <T> void updateEntity(EntityManager em, T entity) {
         em.getTransaction().begin();
-        Club club = new Club(clubNumber, name, address, federation);
-        em.persist(club);
+        em.merge(entity);
         em.getTransaction().commit();
     }
 
-    public Club getClub(EntityManager em, Integer clubNumber) {
-        return em.find(Club.class, clubNumber);
+    public static <T> void deleteEntity(EntityManager em, T entity) {
+        em.getTransaction().begin();
+        em.remove(entity);
+        em.getTransaction().commit();
     }
 
-    public Person getPerson(EntityManager em, Integer personalNumber) {
-        return em.find(Person.class, personalNumber);
-    }
-
-    public Player getPlayer(EntityManager em, Integer personalNumber) {
-        return em.find(Player.class, personalNumber);
+    public static <T> List<T> getAllEntities(EntityManager em, Class<T> entityType) {
+        TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityType.getSimpleName() + " e", entityType);
+        return query.getResultList();
     }
 
     public EntityManager getEm() {
         return em;
     }
+
 
 
 }

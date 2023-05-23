@@ -8,8 +8,11 @@ public class Main {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("dbs");
 
         DAO dao = new DAO(emf);
-        System.out.println(dao.getClub(dao.getEm(), 1));
-        System.out.println(dao.getPerson(dao.getEm(), 1));
+        ServiceLevel sl = new ServiceLevel(dao.getEm());
+//        System.out.println(dao.getClub(dao.getEm(), 1));
+//        System.out.println(dao.getPerson(dao.getEm(), 1));
+
+        System.out.println(sl.getResultsByPlayerIdAndTournament(dao.getEm(), 888, 1));
 
 
     }
