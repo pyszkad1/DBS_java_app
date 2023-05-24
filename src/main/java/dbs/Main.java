@@ -20,7 +20,10 @@ public class Main {
 //        t.test2(dao, sl);
 //        t.test3(dao, sl);
 //        t.test4(dao, sl);
-        t.test5(dao, sl);
+//        t.test5(dao, sl);
+//        t.test6(dao, sl);
+        t.test7(dao, sl);
+
 
         dao.close();
 

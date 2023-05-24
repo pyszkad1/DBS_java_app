@@ -181,6 +181,74 @@ public class ServiceLevel {
         }
     }
 
+
+    public void createResult(EntityManager em, Integer tournamentId, Integer boardNumber, String cards, Integer player1,
+                             Integer player2, Integer player3, Integer player4, String contract, String declarer,
+                             String contractResult, Integer points) {
+        try {
+            em.getTransaction().begin();
+
+            // Retrieve the Tournament entity
+            Tournament tournament = em.find(Tournament.class, tournamentId);
+
+            // Create the composite primary key for TResult
+            TResultId resultId = new TResultId(tournamentId, boardNumber, cards, player1, player2, player3, player4);
+
+            // Create the TResult entity
+            TResult resultEntity = new TResult(resultId, contract, declarer, contractResult, points);
+
+            // Persist the TResult entity
+            em.persist(resultEntity);
+
+            em.getTransaction().commit();
+
+            System.out.println("Result created successfully.");
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        }
+    }
+
+
+    public void changeClubMembership(EntityManager em, Integer personalNumber, Integer newClubNumber) {
+        try {
+            em.getTransaction().begin();
+
+            // Retrieve the Person entity
+            Person person = em.find(Person.class, personalNumber);
+
+            if (person != null) {
+                // Retrieve the new Club entity
+                Club newClub = em.find(Club.class, newClubNumber);
+
+                if (newClub != null) {
+                    // Update the club membership for the person
+                    person.setClub(newClub);
+
+                    // Persist the updated Person entity
+                    em.persist(person);
+
+                    em.getTransaction().commit();
+                    System.out.println("Club membership updated successfully.");
+                } else {
+                    System.out.println("New club not found.");
+                }
+            } else {
+                System.out.println("Person not found.");
+            }
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
     public void rollback(EntityManager em) {
         try {
             em.getTransaction().rollback();
@@ -189,5 +257,7 @@ public class ServiceLevel {
             e.printStackTrace();
         }
     }
+
+
 
 }
